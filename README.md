@@ -1,9 +1,9 @@
 parse-jyutping
 ==============
 
-This is a function in Python that parses a Cantonese syllable transcribed in Jyutping. It takes a string and parses it into a 4-tuple as (onset, nucleus, coda, tone):
+This is a function in Python that parses a Cantonese syllable transcribed in Jyutping. It takes a string and parses it into a 4-tuple as (onset, nucleus, coda, tone).
 
-If you use my code in any way, please cite the following:
+Citation:
 
 Lee, Jackson L. 2014. Parsing Cantonese Jyutping romanization in Python. GitHub repository, https://github.com/JacksonLLee/parse-jyutping
 
