@@ -1,8 +1,7 @@
 #!usr/bin/python
 
 # This is a function in Python that parses a Cantonese syllable transcribed in Jyutping.
-# The Jyutping romanization scheme is devised by the Linguistic Society of Hong Kong:
-# http://www.lshk.org
+# The Jyutping romanization scheme is devised by the Linguistic Society of Hong Kong (http://www.lshk.org).
 #
 # Jackson L. Lee
 # jsllee.phon@gmail.com
@@ -11,8 +10,9 @@
 # code downloaded here:
 # https://github.com/JacksonLLee/parse-jyutping
 #
-# 
-
+# If you use this code in any way, please cite:
+#     Lee, Jackson L. 2014. Parsing Cantonese Jyutping romanization in Python. GitHub repository,
+#     https://github.com/JacksonLLee/parse-jyutping
 
 
 def jyutping(jp):
