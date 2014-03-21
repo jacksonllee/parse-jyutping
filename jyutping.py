@@ -1,16 +1,17 @@
 #!usr/bin/python
 
-# This is a function in Python that parses a Cantonese syllable transcribed in Jyutping.
-# The Jyutping romanization scheme is devised by the Linguistic Society of Hong Kong (http://www.lshk.org).
+# This scrpit defines a function in Python that parses a Cantonese syllable transcribed in Jyutping,
+# the Cantonese romanization scheme devised by the Linguistic Society of Hong Kong
+# (http://www.lshk.org).
 #
 # Jackson L. Lee
 # jsllee.phon@gmail.com
-# 2014-03-18
+# last modified 2014-03-21
 #
 # code downloaded here:
 # https://github.com/JacksonLLee/parse-jyutping
 #
-# If you use this code in any way, please cite:
+# Citation:
 #     Lee, Jackson L. 2014. Parsing Cantonese Jyutping romanization in Python. GitHub repository,
 #     https://github.com/JacksonLLee/parse-jyutping
 
@@ -62,33 +63,39 @@ def jyutping(jp):
     >>> jyutping('saau2')
     ('s', 'aa', 'u', '2')
 
+    >>> jyutping('gui6')
+    ('g', 'u', 'i', '6')
+
+    >>> jyutping('jyut6')
+    ('j', 'yu', 't', '6')
+
     >>> jyutping(123)
     Traceback (most recent call last):
-    JyutPingError: 'argument needs to be a string -- 123'
+    JyutpingError: 'argument needs to be a string -- 123'
 
     >>> jyutping('jit')
     Traceback (most recent call last):
-    JyutPingError: "tone error -- 'jit'"
+    JyutpingError: "tone error -- 'jit'"
 
     >>> jyutping('jit7')
     Traceback (most recent call last):
-    JyutPingError: "tone error -- 'jit7'"
+    JyutpingError: "tone error -- 'jit7'"
 
     >>> jyutping('jix6')
     Traceback (most recent call last):
-    JyutPingError: "coda error -- 'jix6'"
+    JyutpingError: "coda error -- 'jix6'"
 
     >>> jyutping('jxt6')
     Traceback (most recent call last):
-    JyutPingError: "nucleus error -- 'jxt6'"
+    JyutpingError: "nucleus error -- 'jxt6'"
 
     >>> jyutping('fjit6')
     Traceback (most recent call last):
-    JyutPingError: "onset error -- 'fjit6'"
+    JyutpingError: "onset error -- 'fjit6'"
 
     """
 
-    class JyutPingError(Exception):
+    class JyutpingError(Exception):
         def __init__(self, msg):
             self.msg = msg
         def __str__(self):
@@ -97,17 +104,17 @@ def jyutping(jp):
     ## check jp as a valid argument string
 
     if type(jp) is not str:
-        raise JyutPingError('argument needs to be a string -- ' + repr(jp))
+        raise JyutpingError('argument needs to be a string -- ' + repr(jp))
 
     jp = jp.lower()
 
     if len(jp) < 2:
-        raise JyutPingError('argument string needs to contain at least 2 characters -- ' + repr(jp))
+        raise JyutpingError('argument string needs to contain at least 2 characters -- ' + repr(jp))
 
     ## tone
 
     if (not jp[-1].isdigit()) or (jp[-1] not in '123456'):
-        raise JyutPingError('tone error -- ' + repr(jp))
+        raise JyutpingError('tone error -- ' + repr(jp))
 
     tone = jp[-1]
     cvc = jp[:-1]
@@ -115,14 +122,15 @@ def jyutping(jp):
     ## coda
 
     if not (cvc[-1] in 'ieaouptkmng'):
-        raise JyutPingError('coda error -- ' + repr(jp))
+        raise JyutpingError('coda error -- ' + repr(jp))
 
     if cvc in ['m', 'ng', 'i', 'e', 'aa', 'o', 'u']:
         return ('', cvc, '', tone)
     elif cvc[-2:] == 'ng':
         coda = 'ng'
         cv = cvc[:-2]
-    elif (cvc[-1] in 'ptkmn') or ((cvc[-1] in 'iu') and (cvc[-2] == 'a')):
+    elif (cvc[-1] in 'ptkmn') or ((cvc[-1] == 'i') and (cvc[-2] in 'eaou')) or \
+                                 ((cvc[-1] == 'u') and (cvc[-2] in 'ieao')):
         coda = cvc[-1]
         cv = cvc[:-1]
     else:
@@ -134,13 +142,13 @@ def jyutping(jp):
     nucleus = ''
 
     while cv[-1] in 'ieaouy':
-        nucleus = nucleus + cv[-1]
+        nucleus = cv[-1] + nucleus
         cv = cv[:-1]
         if not cv:
             break
 
     if not nucleus:
-        raise JyutPingError('nucleus error -- ' + repr(jp))
+        raise JyutpingError('nucleus error -- ' + repr(jp))
 
     onset = cv
 
@@ -148,7 +156,7 @@ def jyutping(jp):
                  'l', 'w', 'j', '']
 
     if onset not in onsetList:
-        raise JyutPingError('onset error -- ' + repr(jp))
+        raise JyutpingError('onset error -- ' + repr(jp))
 
     return (onset, nucleus, coda, tone)
 
@@ -156,4 +164,3 @@ def jyutping(jp):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
